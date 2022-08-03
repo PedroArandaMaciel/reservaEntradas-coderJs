@@ -1,0 +1,10 @@
+.imgPelicula, .imgSnacks {
+  padding: 5px;
+}
+
+.flexCont {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/*# sourceMappingURL=styles.css.map */
