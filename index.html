@@ -2,73 +2,94 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/styles.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/styles.css">
+  <title>Document</title>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="index.html"><img src="https://img.icons8.com/ios/100/000000/disney-movies-.png"/></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="./secciones/tienda.html">Tienda</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="./secciones/registro.html">Crear Cuenta</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="./secciones/sesion.html">Iniciar Sesion</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-    </header>
-    <main>
-        <div class="mainGrid">
-            <section>
-                <div>
-                    <p>Peliculas</p>
-                </div>
-                <div class="flexCont">
-                    <div>
-                        <img class="imgPelicula" src="https://dummyimage.com/200x300/000/fff" alt="">
-                    </div>
-                    <div>
-                        <img class="imgPelicula" src="https://dummyimage.com/200x300/000/fff" alt="">
-                    </div>
-                    <div>
-                        <img class="imgPelicula" src="https://dummyimage.com/200x300/000/fff" alt="">
-                    </div>
-                    <div>
-                        <img class="imgPelicula" src="https://dummyimage.com/200x300/000/fff" alt="">
-                    </div>
-                    <div>
-                        <img class="imgPelicula" src="https://dummyimage.com/200x300/000/fff" alt="">
-                    </div>
-                </div>
-            </section>
-
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><img
+            src="https://img.icons8.com/ios/100/000000/disney-movies-.png" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./secciones/tienda.html">Tienda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./secciones/registro.html">Crear Cuenta</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./secciones/sesion.html">Iniciar Sesion</a>
+            </li>
+          </ul>
         </div>
-    </main>
-    <footer>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <form id="formEntrada">
+        <div>
+          <h3>Reserva de entradas</h3>
+        </div>
+        <div class="contenedorSeleccion">
+          <label for="pelicula">Seleccione una pelicula</label>
+          <select class="form-select" id="pelicula" name="pelicula">
+            <option value="0">--</option>
+            <option value="El Telefono Negro">El Telefono Negro</option>
+            <option value="La Casa Embrujada">La Casa Embrujada</option>
+            <option value="Los Minions">Los Minions</option>
+            <option value="Avatar, El Camino Del Agua">Avatar, El Camino Del Agua</option>
+          </select><br>
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="mayor" name="mayor" value="0">
+            <label for="floatingInput">¿Cuantos mayores son?</label>
+          </div>
+          <div class="form-floating">
+            <input type="number" class="form-control" id="menor" name="menor" value="0">
+            <label for="floatingPassword">¿Cuantos menores son?</label>
+          </div>
+          <input class="btn btn-primary" type="submit" value="Reservar">
+        </div>
 
-    </footer>
-    <script src="script.js"></script>
+      </form>
+    </section>
+    <section>
+      <h4>Revisa tus reservas</h4>
+      <div id="divEntradas"></div>
+    </section>
+  </main>
+  <footer class="text-center text-white" style="background-color: #0a4275;">
+    <div class="container p-4 pb-0">
+      <section class="">
+        <p class="d-flex justify-content-center align-items-center">
+          <span class="me-3">Registrate desde aqui</span>
+          <a href="./secciones/registro.html"><button type="button" class="btn btn-outline-light btn-rounded">
+            Registro!
+          </button></a>
+        </p>
+      </section>
+    </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2022 Copyright:
+      <a class="text-white" href="https://www.linkedin.com/in/pedroenriquearandamaciel">Pedro Aranda</a>
+    </div>
+  </footer>
+  <script src="script.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,3 @@
-.imgPelicula{
-    padding: 5px;
-}
-.flexContPeliculas{
-    display: flex;
-    flex-wrap: wrap;
-}
+@import "./base/resets";
+@import "./layout/reservas";
+@import "./layout/cardsReserva";

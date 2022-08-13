@@ -1,10 +1,51 @@
-.imgPelicula, .imgSnacks {
-  padding: 5px;
+* {
+  padding: 0;
+  margin: 0;
 }
 
-.flexCont {
+main {
+  min-height: 100vh;
+}
+
+body main section #formEntrada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body main section #formEntrada div h3 {
+  border-bottom: 1px solid rgba(255, 0, 132, 0.628);
+}
+body main section #formEntrada .contenedorSeleccion {
+  width: 50%;
+}
+
+body main section {
+  margin-top: 50px;
+}
+body main section h4 {
+  margin-left: 15px;
+}
+body main section #divEntradas {
   display: flex;
   flex-wrap: wrap;
+}
+body main section #divEntradas .cardReserva {
+  min-width: 295px;
+  padding: 20px;
+  margin: 30px 0px 0px 15px;
+  background-color: rgba(16, 179, 194, 0.415);
+  border-radius: 5px;
+}
+body main section #divEntradas .cardReserva div {
+  display: flex;
+  justify-content: end;
+}
+body main section #divEntradas .cardReserva div .btnCancelarRes {
+  padding: 5px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: small;
 }
 
 /*# sourceMappingURL=styles.css.map */
