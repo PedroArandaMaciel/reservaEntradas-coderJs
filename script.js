@@ -16,11 +16,8 @@ function generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cant
 function calcularEntrada(cantidadDeEntradas = 1, edad = "") {
     const PRECIOMAYOR = 900
     const PRECIOMENOR = 450
-    if (edad === "mayor") {
-        return PRECIOMAYOR * cantidadDeEntradas
-    } else if (edad === "menor") {
-        return PRECIOMENOR * cantidadDeEntradas
-    }
+    let valor = (edad === "mayor") ? PRECIOMAYOR * cantidadDeEntradas : (edad === "menor") ? PRECIOMENOR * cantidadDeEntradas : 0
+    return valor
 }
 function insertarHtml() {
     const divEntradas = document.getElementById("divEntradas")
@@ -32,7 +29,7 @@ function insertarHtml() {
         <p>Mayores: ${reserva.Mayores}</p>
         <p>Menores: ${reserva.Menores}</p>
         <p>Reserva Numero: ${reserva.Id}</p>
-        <p>Precio Total: ${reserva.PrecioTotal}</p>
+        <p>Precio Total: $${reserva.PrecioTotal}</p>
         <div>
         <button class="btnCancelarRes" id="btnReserva${reservas.length}">Remover Reserva</button>
         </div>
@@ -55,7 +52,7 @@ if(localStorage.getItem("reservasLS")){
         <p>Mayores: ${reserva.Mayores}</p>
         <p>Menores: ${reserva.Menores}</p>
         <p>Reserva Numero: ${reserva.Id}</p>
-        <p>Precio Total: ${reserva.PrecioTotal}</p>
+        <p>Precio Total: $${reserva.PrecioTotal}</p>
         <div>
         <button class="btnCancelarRes" id="btnReserva${reservas.length}">Remover Reserva</button>
         </div>
@@ -72,12 +69,8 @@ formEntrada.addEventListener("submit", (event) => {
     const cantMayores = parseInt(document.getElementById("mayor").value)
     const cantMenores = parseInt(document.getElementById("menor").value)
     if ((cantMayores >= 0 && cantMenores >= 0) && (cantMayores != 0 || cantMenores != 0) && (pelicula != 0)) {
-        if (cantMayores > 0) {
-            precioReservaMayores = calcularEntrada(cantMayores, "mayor")
-        }
-        if (cantMenores > 0) {
-            precioReservaMenores = calcularEntrada(cantMenores, "menor")
-        }
+        precioReservaMayores = (cantMayores > 0) ? calcularEntrada(cantMayores, "mayor") : 0
+        precioReservaMenores = (cantMenores > 0) ? calcularEntrada(cantMenores, "menor") : 0
         let precioFinal = suma(precioReservaMayores, precioReservaMenores)
         const entrada = new Reserva(pelicula, cantMayores, cantMenores, idReserva, precioFinal)
         reservas.push(entrada)
