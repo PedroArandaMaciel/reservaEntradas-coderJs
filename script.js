@@ -79,6 +79,20 @@ formEntrada.addEventListener("submit", (event) => {
         console.log(generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cantMenores, precioReservaMenores, precioFinal))
         idReserva++
         insertarHtml()
+        Toastify({
+            text: `Reserva de ${pelicula}` ,
+            duration: 3000,
+            //destination: "https://github.com/apvarun/toastify-js",
+            //newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(90deg, rgba(71,94,207,0.3449754901960784) 0%, rgba(148,187,233,1) 100%)",
+            },
+            onClick: function(){} // Callback after click
+          }).showToast();
     } else {
         console.log("Cantidad no valida")
     }
