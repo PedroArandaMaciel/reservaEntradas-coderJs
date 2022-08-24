@@ -1,0 +1,86 @@
+[
+    {
+        "pelicula" : "¡NOP!",
+        "genero" : "Ciencia Ficcion",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "25/08/2022",
+        "img" : "nop.jpg"
+    },
+    {
+        "pelicula" : "ALTER AMOR INFINITO",
+        "genero" : "Romance",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "25/08/2022",
+        "img" : "afterAmor.jpg"
+    },
+    {
+        "pelicula" : "FESTIVAL NICKJR.",
+        "genero" : "Infantil Animada",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "25/08/2022",
+        "img" : "nickJr.jpg"
+    },
+    {
+        "pelicula" : "NUNCA VOLVERA A NEVAR",
+        "genero" : "Comedia Dramatica",
+        "duracion" : 92,
+        "fecha_lanzamiento" : "25/08/2022",
+        "img" : "nuncaNevar.jpg"
+    },
+    {
+        "pelicula" : "UN CRIMEN ARGENTINO",
+        "genero" : "Drama",
+        "duracion" : 104,
+        "fecha_lanzamiento" : "25/08/2022",
+        "img" : "crimenArg.jpg"
+    },
+    {
+        "pelicula" : "LA CHICA SALVAJE",
+        "genero" : "Drama",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "01/09/2022",
+        "img" : "chicaSalvaje.jpg"
+    },
+    {
+        "pelicula" : "VERTIGO",
+        "genero" : "Drama",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "01/09/2022",
+        "img" : "vertigo.jpg"
+    },
+    {
+        "pelicula" : "ERASE UNA VEZ UN GENIO",
+        "genero" : "Drama",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "08/09/2022",
+        "img" : "eraseUnGenio.jpg"
+    },
+    {
+        "pelicula" : "LA HUERFANA: EL ORIGEN",
+        "genero" : "Terror",
+        "duracion" : 99,
+        "fecha_lanzamiento" : "22/09/2022",
+        "img" : "laHuerfana.jpg"
+    },
+    {
+        "pelicula" : "NO TE PREOCUPES QUERIDA",
+        "genero" : "Suspenso",
+        "duracion" : 90,
+        "fecha_lanzamiento" : "22/09/2022",
+        "img" : "noTepreocupesCar.jpg"
+    },
+    {
+        "pelicula" : "SUPER ¿QUIEN?",
+        "genero" : "Comedia",
+        "duracion" : 82,
+        "fecha_lanzamiento" : "29/09/2022",
+        "img" : "superQuien.jpg"
+    },
+    {
+        "pelicula" : "ESCALERA AL INFIERNO",
+        "genero" : "Terror",
+        "duracion" : 94,
+        "fecha_lanzamiento" : "06/10/2022",
+        "img" : "escaleraInfierno.jpg"
+    }
+]

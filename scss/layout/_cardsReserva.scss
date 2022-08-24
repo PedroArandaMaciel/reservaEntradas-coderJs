@@ -8,6 +8,7 @@ body{
             #divEntradas{
                 display: flex;
                 flex-wrap: wrap;
+                min-height: 30vh;
                 .cardReserva{
                     min-width: 295px;
                     padding: 20px;

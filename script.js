@@ -41,7 +41,7 @@ const reservas = []
 let idReserva = 1
 let ultimasReservasStorage = []
 
-if(localStorage.getItem("reservasLS")){                               
+if(localStorage.getItem("reservasLS")){                             
     ultimasReservasStorage = JSON.parse(localStorage.getItem("reservasLS"))
     idReserva = ultimasReservasStorage.length + 1
     ultimasReservasStorage.forEach((reserva, indice) => {
@@ -60,7 +60,7 @@ if(localStorage.getItem("reservasLS")){
         `
     })
 }
-console.log(ultimasReservasStorage)
+console.log(ultimasReservasStorage) //borrar log de prueba
 const formEntrada = document.getElementById("formEntrada")
 formEntrada.addEventListener("submit", (event) => {
     event.preventDefault()
@@ -97,4 +97,23 @@ formEntrada.addEventListener("submit", (event) => {
         console.log("Cantidad no valida")
     }
     formEntrada.reset()
+})
+const divProximamente = document.getElementById("divProximamente")
+fetch('./json/estrenos.json')
+.then(response => response.json())
+.then(entradas => {
+    entradas.forEach((entrada) => {
+        divProximamente.innerHTML += `
+        <div class="card cardStyle">
+        <div>
+        <img src="../img/${entrada.img}" class="card-img-top">
+        </div>
+        <div class="card-body">
+          <h6 class="card-title fw-bold">${entrada.pelicula}</h6>
+          <p class="card-text">Genero: ${entrada.genero}</p>
+          <p class="card-text">Duracion: ${entrada.duracion}min</p>
+          <p class="card-text">Fecha Lanzamiento: ${entrada.fecha_lanzamiento}</p>
+        </div>
+        `
+    })
 })

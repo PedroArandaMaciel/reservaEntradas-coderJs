@@ -3,6 +3,10 @@
   margin: 0;
 }
 
+body {
+  min-height: 100vh;
+}
+
 main {
   min-height: 100vh;
 }
@@ -28,6 +32,7 @@ body main section h4 {
 body main section #divEntradas {
   display: flex;
   flex-wrap: wrap;
+  min-height: 30vh;
 }
 body main section #divEntradas .cardReserva {
   min-width: 295px;
@@ -46,6 +51,20 @@ body main section #divEntradas .cardReserva div .btnCancelarRes {
   border: none;
   border-radius: 5px;
   font-size: small;
+}
+
+body main .sectionProximamente h5 {
+  margin: 15px;
+  padding: 10px;
+}
+body main .sectionProximamente #divProximamente {
+  justify-content: center;
+  --bs-gutter-x: 0;
+}
+body main .sectionProximamente #divProximamente .cardStyle {
+  width: 240px;
+  margin: 10px;
+  padding: 5px;
 }
 
 /*# sourceMappingURL=styles.css.map */
