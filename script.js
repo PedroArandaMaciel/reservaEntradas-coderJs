@@ -10,31 +10,39 @@ class Reserva {
 function suma(numero1 = 0, numero2 = 0) {
     return numero1 + numero2
 }
-function generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cantMenores, precioReservaMenores, precioFinal) {
-    return (`\n*********PELICULA: ${pelicula}\n*\n* ADULTOS: ${cantMayores} Mayores-------->SubTotal: $${precioReservaMayores}\n* CHICOS: ${cantMenores} Menores--------->SubTotal: $${precioReservaMenores}\n*\n*                        PRECIO FINAL: $${precioFinal}\n*********************************************`)
-}
+//function generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cantMenores, precioReservaMenores, precioFinal) {
+//    return (`\n*********PELICULA: ${pelicula}\n*\n* ADULTOS: ${cantMayores} Mayores-------->SubTotal: $${precioReservaMayores}\n* CHICOS: ${cantMenores} Menores--------->SubTotal: $${precioReservaMenores}\n*\n*                        PRECIO FINAL: $${precioFinal}\n*********************************************`)
+//}
 function calcularEntrada(cantidadDeEntradas = 1, edad = "") {
     const PRECIOMAYOR = 900
     const PRECIOMENOR = 450
     let valor = (edad === "mayor") ? PRECIOMAYOR * cantidadDeEntradas : (edad === "menor") ? PRECIOMENOR * cantidadDeEntradas : 0
     return valor
 }
-function insertarHtml() {
+function pintarNumeroCarrito(cantidadReservas) {
+    const numeroCarrito = document.getElementById("spanCantCarrito")
+    numeroCarrito.innerHTML = `
+    <span class="badge bg-primary rounded-pill">${cantidadReservas}</span>
+    `
+}
+function pintarEstructuraEntrada(reserva) {
+    divEntradas.innerHTML += `
+    <div class="card border-success mb-3">
+    <div class="card-header bg-transparent border-success">Reserva numero ${reserva.Id}</div>
+    <div class="card-body text-success">
+      <h5 class="card-title">${reserva.Pelicula}</h5>
+      <p class="card-text">Mayores: ${reserva.Mayores}</p>
+      <p class="card-text">Menores: ${reserva.Menores}</p>
+      <p class="card-text">Precio Total: $${reserva.PrecioTotal}</p>
+    </div>
+    <button class="btn btn-primary">Remover Seleccion</button>
+    `
+}
+function pintarCarrito() {
     const divEntradas = document.getElementById("divEntradas")
     divEntradas.innerText = ""
     reservas.forEach(reserva => {
-        divEntradas.innerHTML += `
-        <div class="cardReserva" id="reserva${reserva.Id}">
-        <p>Pelicula: ${reserva.Pelicula}</p>
-        <p>Mayores: ${reserva.Mayores}</p>
-        <p>Menores: ${reserva.Menores}</p>
-        <p>Reserva Numero: ${reserva.Id}</p>
-        <p>Precio Total: $${reserva.PrecioTotal}</p>
-        <div>
-        <button class="btnCancelarRes" id="btnReserva${reservas.length}">Remover Reserva</button>
-        </div>
-        </div>
-        `
+        pintarEstructuraEntrada(reserva)
     })
 }
 const reservas = []
@@ -44,23 +52,13 @@ let ultimasReservasStorage = []
 if(localStorage.getItem("reservasLS")){                             
     ultimasReservasStorage = JSON.parse(localStorage.getItem("reservasLS"))
     idReserva = ultimasReservasStorage.length + 1
-    ultimasReservasStorage.forEach((reserva, indice) => {
+    pintarNumeroCarrito(ultimasReservasStorage.length)
+    ultimasReservasStorage.forEach((reserva) => {
         reservas.push(reserva)                                //igualo mi array reservas con el array de ultimasReservas(storage)
-        divEntradas.innerHTML += `
-        <div class="cardReserva" id="reserva${indice}">
-        <p>Pelicula: ${reserva.Pelicula}</p>
-        <p>Mayores: ${reserva.Mayores}</p>
-        <p>Menores: ${reserva.Menores}</p>
-        <p>Reserva Numero: ${reserva.Id}</p>
-        <p>Precio Total: $${reserva.PrecioTotal}</p>
-        <div>
-        <button class="btnCancelarRes" id="btnReserva${reservas.length}">Remover Reserva</button>
-        </div>
-        </div>
-        `
+        pintarEstructuraEntrada(reserva)
     })
 }
-console.log(ultimasReservasStorage) //borrar log de prueba
+//console.log(ultimasReservasStorage) //borrar log de prueba
 const formEntrada = document.getElementById("formEntrada")
 formEntrada.addEventListener("submit", (event) => {
     event.preventDefault()
@@ -75,10 +73,11 @@ formEntrada.addEventListener("submit", (event) => {
         const entrada = new Reserva(pelicula, cantMayores, cantMenores, idReserva, precioFinal)
         reservas.push(entrada)
         localStorage.setItem("reservasLS", JSON.stringify(reservas))      //actualiza el array reservas a medida se generan
-        console.log(reservas)
-        console.log(generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cantMenores, precioReservaMenores, precioFinal))
+        //console.log(reservas)
+        //console.log(generarEntradaConsola(pelicula, cantMayores, precioReservaMayores, cantMenores, precioReservaMenores, precioFinal))
         idReserva++
-        insertarHtml()
+        pintarCarrito()
+        pintarNumeroCarrito(reservas.length)
         Toastify({
             text: `Reserva de ${pelicula}` ,
             duration: 3000,
@@ -99,14 +98,14 @@ formEntrada.addEventListener("submit", (event) => {
     formEntrada.reset()
 })
 const divProximamente = document.getElementById("divProximamente")
-fetch('./json/estrenos.json')
+fetch('./json/estrenos.json') //falta un punto en ruta '../json'
 .then(response => response.json())
 .then(entradas => {
     entradas.forEach((entrada) => {
         divProximamente.innerHTML += `
         <div class="card cardStyle">
         <div>
-        <img src="../img/${entrada.img}" class="card-img-top">
+        <img src="./img/${entrada.img}" class="card-img-top">
         </div>
         <div class="card-body">
           <h6 class="card-title fw-bold">${entrada.pelicula}</h6>
