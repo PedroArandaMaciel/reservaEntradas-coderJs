@@ -1,0 +1,14 @@
+body{
+    main{
+       section{
+            #formRegistro{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                #contDatosFormRegistro{
+                    width: 50%;
+                }
+            }
+       }
+    }
+}

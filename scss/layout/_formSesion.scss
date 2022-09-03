@@ -1,0 +1,14 @@
+body{
+    main{
+       section{
+            #formSesion{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                #contDatosInicioSesion{
+                    width: 50%;
+                }
+            }
+       }
+    }
+}

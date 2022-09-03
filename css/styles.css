@@ -66,5 +66,22 @@ body main .sectionProximamente #divProximamente .cardStyle {
   margin: 10px;
   padding: 5px;
 }
+body main section #formRegistro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body main section #formRegistro #contDatosFormRegistro {
+  width: 50%;
+}
+
+body main section #formSesion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+body main section #formSesion #contDatosInicioSesion {
+  width: 50%;
+}
 
 /*# sourceMappingURL=styles.css.map */
