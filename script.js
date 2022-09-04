@@ -1,28 +1,27 @@
 class Reserva {
-    constructor(pelicula = "", cantMayor = 0, cantMenor = 0, id, precioTotal) {
+    constructor(pelicula = "", cantMayor = 0, cantMenor = 0, precioTotal) {
         this.Pelicula = pelicula;
         this.Mayores = cantMayor;
         this.Menores = cantMenor;
-        this.Id = id;
         this.PrecioTotal = precioTotal
     }
 }
-function calcularEntrada(cantidadDeEntradas = 1, edad = "") {   //Retorna el precio. Recibe la cantidad y "mayor" o "menor"
+function calcularEntrada(cantidadDeEntradas = 1, edad = "") {                       //Recibe la cantidad y "mayor" o "menor"
     const PRECIOMAYOR = 900
     const PRECIOMENOR = 450
-    let valor = (edad === "mayor") ? PRECIOMAYOR * cantidadDeEntradas : (edad === "menor") ? PRECIOMENOR * cantidadDeEntradas : 0
-    return valor
+    let valorTotal = (edad === "mayor") ? PRECIOMAYOR * cantidadDeEntradas : (edad === "menor") ? PRECIOMENOR * cantidadDeEntradas : 0
+    return valorTotal
 }
-function pintarNumeroCarrito(cantidadReservas) {                        //injecta un span en carrito para mostrar el numero de reservas
+function numeroCarritoInner(cantidadReservas) {                                 //muestra span con numero de elementos en carrito
     const numeroCarrito = document.getElementById("spanCantCarrito")
     numeroCarrito.innerHTML = `
     <span class="badge bg-primary rounded-pill">${cantidadReservas}</span>
     `
 }
-function pintarEstructuraEntrada(reserva) {
+function estructuraCard(reserva, index) {
     divEntradas.innerHTML += `
-    <div class="card border-success mb-3 reserva${reserva.Id}">
-        <div class="card-header bg-transparent border-success">Reserva numero ${reserva.Id}</div>
+    <div class="card border-success mb-3" id="reserva${index}">        
+        <div class="card-header bg-transparent border-success">Reserva numero ${index + 1}</div>
             <div class="card-body text-success">
             <h5 class="card-title">${reserva.Pelicula}</h5>
             <p class="card-text">Mayores: ${reserva.Mayores}</p>
@@ -36,23 +35,81 @@ function pintarEstructuraEntrada(reserva) {
 function pintarCarrito() {
     const divEntradas = document.getElementById("divEntradas")
     divEntradas.innerText = ""
-    reservas.forEach(reserva => {               //por cada reserva en mi array, llamo a la funcion y pinto la o las reservas en carrito
-        pintarEstructuraEntrada(reserva)
+    reservas.forEach((reserva, index) => {
+        estructuraCard(reserva, index)
     })
+    eventBotonRemover()        //aplicar evento en los botones de las cards
+}
+function eventBotonRemover() {
+    reservas.forEach((reserva, index) => {
+        document.getElementById(`reserva${index}`).children[2].  //boton de cada card
+            addEventListener('click', () => {
+                document.getElementById(`reserva${index}`).remove()
+                reservas.splice(index, 1)
+                localStorage.setItem("reservasLS", JSON.stringify(reservas))
+                pintarCarrito()                     //reiniciar los elementos para que coincida el index del dom con el del array reservas
+                Toastify({
+                    text: `Reserva De "${reserva.Pelicula}" Removida Con Exito`,
+                    duration: 2000,
+                    gravity: "top",
+                    position: "center",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
+                    },
+                    onClick: function () { }
+                }).showToast();
+            })
+    })
+}
+function eventBotonLimpiar() {
+    document.getElementById("limpiarCarrito").
+        addEventListener('click', () => {
+            if (reservas.length > 0) {
+                reservas.forEach((reserva, index) => {
+                    document.getElementById(`reserva${index}`).remove()
+                })
+                reservas.splice(0, reservas.length)
+                localStorage.setItem("reservasLS", JSON.stringify(reservas))
+                numeroCarritoInner(reservas.length)
+                Toastify({
+                    text: `Reservas Removidas Con Exito`,
+                    duration: 2000,
+                    gravity: "top",
+                    position: "center",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
+                    },
+                    onClick: function () { }
+                }).showToast();
+            } else {
+                Toastify({
+                    text: `El Carrito Se Encuentra Vacio`,
+                    duration: 2000,
+                    gravity: "top",
+                    position: "center",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
+                    },
+                    onClick: function () { }
+                }).showToast();
+            }
+        })
 }
 const reservas = []
-let idReserva = 1
 let ultimasReservasStorage = []
-
-if(localStorage.getItem("reservasLS")){                             
+if (localStorage.getItem("reservasLS")) {
     ultimasReservasStorage = JSON.parse(localStorage.getItem("reservasLS"))
-    idReserva = ultimasReservasStorage.length + 1
-    pintarNumeroCarrito(ultimasReservasStorage.length)
-    ultimasReservasStorage.forEach((reserva) => {
-        reservas.push(reserva)                                //igualo mi array reservas con el array de ultimasReservas(storage)
-        pintarEstructuraEntrada(reserva)
+    numeroCarritoInner(ultimasReservasStorage.length)
+    ultimasReservasStorage.forEach((reserva, index) => {    //igualar reservas[] con ultimasReservasStorage[] y pintar DOM
+        reservas.push(reserva)
+        estructuraCard(reserva, index)
     })
+    eventBotonRemover()
 }
+eventBotonLimpiar()
 const formEntrada = document.getElementById("formEntrada")
 formEntrada.addEventListener("submit", (event) => {
     event.preventDefault()
@@ -64,47 +121,46 @@ formEntrada.addEventListener("submit", (event) => {
         precioReservaMayores = (cantMayores > 0) ? calcularEntrada(cantMayores, "mayor") : 0
         precioReservaMenores = (cantMenores > 0) ? calcularEntrada(cantMenores, "menor") : 0
         let precioFinal = (precioReservaMayores + precioReservaMenores)
-        const entrada = new Reserva(pelicula, cantMayores, cantMenores, idReserva, precioFinal)
+        const entrada = new Reserva(pelicula, cantMayores, cantMenores, precioFinal)
         reservas.push(entrada)
         localStorage.setItem("reservasLS", JSON.stringify(reservas))      //actualiza el storage a medida se generan reservas validas
-        idReserva++
         pintarCarrito()
-        pintarNumeroCarrito(reservas.length)   //le paso como argumento el tamaño de mi array para mostrar la cantidad de reservas
+        numeroCarritoInner(reservas.length)
         Toastify({
-            text: `Reserva de "${pelicula}"` ,
+            text: `Reserva de "${pelicula}"`,
             duration: 3000,
             close: true,
             gravity: "top",
             position: "center",
             stopOnFocus: true,
             style: {
-              background: "linear-gradient(90deg, rgba(71,94,207,0.3449754901960784) 0%, rgba(148,187,233,1) 100%)",
+                background: "linear-gradient(90deg, rgba(71,94,207,0.3449754901960784) 0%, rgba(148,187,233,1) 100%)",
             },
-            onClick: function(){
+            onClick: function () {
                 document.getElementById("carritoBoton").click()
             } // Callback after click
-          }).showToast();
+        }).showToast();
     } else {
         Toastify({
-            text: "Valores no validos, intente nuevamente por favor" ,
+            text: "Valores no validos, intente nuevamente por favor",
             duration: 1500,
             gravity: "top",
             position: "center",
             stopOnFocus: true,
             style: {
-              background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
+                background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
             },
-            onClick: function(){}
-          }).showToast();
+            onClick: function () { }
+        }).showToast();
     }
     formEntrada.reset()
 })
 const divProximamente = document.getElementById("divProximamente")
 fetch('./json/estrenos.json')
-.then(response => response.json())
-.then(estrenosProx => {
-    estrenosProx.forEach((pelicula) => {
-        divProximamente.innerHTML += `
+    .then(response => response.json())
+    .then(estrenosProx => {
+        estrenosProx.forEach((pelicula) => {
+            divProximamente.innerHTML += `
         <div class="card cardStyle">
         <div>
         <img src="./img/${pelicula.img}" class="card-img-top">
@@ -116,5 +172,5 @@ fetch('./json/estrenos.json')
           <p class="card-text">Fecha Lanzamiento: ${pelicula.fecha_lanzamiento}</p>
         </div>
         `
+        })
     })
-})
