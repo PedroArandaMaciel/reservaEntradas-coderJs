@@ -14,7 +14,7 @@
 
 <body>
   <header>
-    <input id="pageName" type="hidden" value="index"/>
+    <input id="pageName" type="hidden" value="index" />
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="index.html"><img
@@ -29,13 +29,14 @@
               <a class="nav-link active" aria-current="page" href="index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./secciones/registro.html">Crear Cuenta</a>
+              <a class="nav-link" id="navCuenta" href="./secciones/registro.html">Crear Cuenta</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./secciones/sesion.html">Iniciar Sesion</a>
+              <a class="nav-link" id="navSesion" href="./secciones/sesion.html">Iniciar Sesion</a>
             </li>
           </ul>
         </div>
+        <button id="navCerrarSesion" type="button" class="btn btn-primary">Cerrar Sesion</button>
       </div>
       <button id="carritoBoton" type="button" class="btn btn-primary" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
@@ -51,7 +52,9 @@
             <div class="modal-body" id="divEntradas">
             </div>
             <div class="modal-footer d-flex justify-content-between">
-              <button type="button" class="btn btn-primary" id="botonFinalizarCompra">Finalizar Compra</button>
+              <div>
+                <button type="button" class="btn btn-primary" id="botonFinalizarCompra">Finalizar Compra</button>
+              </div>
               <button type="button" id="limpiarCarrito" class="btn btn-primary">Limpiar Carrito</button>
             </div>
           </div>

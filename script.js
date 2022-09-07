@@ -156,9 +156,18 @@ function eventBotonFinCompra() {
             }
         })
 }
+//vista de botones y secciones
+document.getElementById("botonFinalizarCompra").style.display = 'none'
+function elementosVistaSesion() {
+    document.getElementById("navCuenta").style.display = 'none'
+    document.getElementById("botonFinalizarCompra").style.display = ''
+    document.getElementById("navSesion").style.display = 'none'
+}
+if (sessionStorage.getItem("login")) {
+    elementosVistaSesion()
+}
 const reservas = []
 let ultimasReservasStorage = []
-//consulta al localStorage
 if (localStorage.getItem("reservasLS")) {
     ultimasReservasStorage = JSON.parse(localStorage.getItem("reservasLS"))
     numeroCarritoInner(ultimasReservasStorage.length)
@@ -172,6 +181,30 @@ eventBotonLimpiar()
 eventBotonFinCompra()
 //Condicion para revisar si me encuentro en el index, registro o sesion y aplicar su respectivo codigo JS
 if (document.getElementById("pageName").value == "index") {
+    document.getElementById("navCerrarSesion").style.display = 'none'
+    if (sessionStorage.getItem("login")) {
+        document.getElementById("navCerrarSesion").style.display = ''
+    }
+    const botonSesion = document.getElementById("navCerrarSesion")
+    botonSesion.addEventListener("click", (e) => {
+        e.preventDefault()
+        sessionStorage.removeItem("login")
+        document.getElementById("navCerrarSesion").style.display = 'none'
+        Toastify({
+            text: `Cerrando Sesion....`,
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+            },
+            onClick: function () { }
+        }).showToast();
+        setTimeout(() => {
+            location.reload()
+        }, 3000)
+    })
     const formEntrada = document.getElementById("formEntrada")
     formEntrada.addEventListener("submit", (event) => {
         event.preventDefault()
@@ -228,14 +261,13 @@ if (document.getElementById("pageName").value == "index") {
         })
 } else if (document.getElementById("pageName").value == "registro") {
     let cuentas = []
-    if (localStorage.getItem("cuentas")) {
-        cuentas = JSON.parse(localStorage.getItem("cuentas"))
-        console.log(cuentas)
+    if (localStorage.getItem("cuentasLS")) {
+        cuentas = JSON.parse(localStorage.getItem("cuentasLS"))
     }
     const formRegistro = document.getElementById("formRegistro")
     formRegistro.addEventListener("submit", (event) => {
         event.preventDefault()
-        const pattern = new RegExp('[A-Za-z]+');
+        const pattern = new RegExp('[A-Za-z]+'); //valores que van a ser validos en "nombre" y "apellido"
         const dataForm = new FormData(event.target)
         const nombre = dataForm.get("inputName")
         const apellido = dataForm.get("inputSurname")
@@ -246,7 +278,7 @@ if (document.getElementById("pageName").value == "index") {
         } else if (nombre != "" && apellido != "" && email != "" && psw != "") {
             const cuenta = new Cuenta(nombre, apellido, email, psw)
             cuentas.push(cuenta)
-            localStorage.setItem("cuentas", JSON.stringify(cuentas)) //simular base de datos con local storage
+            localStorage.setItem("cuentasLS", JSON.stringify(cuentas)) //simular base de datos con local storage
             formRegistro.reset()
             Swal.fire({
                 position: 'center',
@@ -260,9 +292,53 @@ if (document.getElementById("pageName").value == "index") {
         }
     })
 } else if (document.getElementById("pageName").value == "sesion") {
-    let cuentas = []
-    if (localStorage.getItem("cuentas")) {
-        cuentas = JSON.parse(localStorage.getItem("cuentas"))
-        console.log(cuentas)
+    function obtenerListaUsers() {
+        let usersDb = JSON.parse(localStorage.getItem('cuentasLS'))
+        return usersDb
+    }
+    function validarCredenciales(email, psw) {
+        let listaUsuarios = []
+        listaUsuarios = JSON.parse(localStorage.getItem('cuentasLS'))
+        let acceso = false
+        for (let i = 0; i < listaUsuarios.length; i++) { //itera en Email y Password de cada obj del array
+            if (email == listaUsuarios[i].Email && psw == listaUsuarios[i].Password) {
+                acceso = true
+            }
+        }
+        return acceso
+    }
+    const formIniciarSesion = document.getElementById("formSesion")
+    formIniciarSesion.addEventListener('submit', (event) => {
+        event.preventDefault()
+        const email = document.getElementById("inputEmail").value
+        const psw = document.getElementById("inputPsw").value
+        console.log(validarCredenciales(email, psw))
+        if (validarCredenciales(email, psw)) {
+            sessionStorage.setItem("login", true)
+            elementosVistaSesion()
+            formIniciarSesion.innerHTML = `
+        <h3>Sesion iniciada, revisa tu carrito para completar la compra</h3>
+        <div id="entradasSesion"><div>`
+            Toastify({
+                text: `Credenciales validadas, bienvenido/a`,
+                duration: 2000,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+                },
+                onClick: function () { }
+            }).showToast();
+        } else {
+            valoresNoValidos()
+        }
+        formIniciarSesion.reset()
+    })
+    if (JSON.parse(sessionStorage.getItem("login")) == true) {
+        formIniciarSesion.innerHTML = `
+        <h3>Sesion iniciada, revisa tu carrito para completar la compra</h3>
+        <div id="entradasSesion"><div>`
+        elementosVistaSesion()
     }
 }
