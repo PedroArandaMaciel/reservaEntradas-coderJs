@@ -14,13 +14,13 @@ class Cuenta {
         this.Password = psw
     }
 }
-function calcularEntrada(cantidadDeEntradas = 1, edad = "") {                       //Recibe la cantidad y "mayor" o "menor"
+function calcularEntrada(cantidadDeEntradas = 1, edad = "") {                       //Recibe la cantidad y argumento "mayor" o "menor"
     const PRECIOMAYOR = 900
     const PRECIOMENOR = 450
     let valorTotal = (edad === "mayor") ? PRECIOMAYOR * cantidadDeEntradas : (edad === "menor") ? PRECIOMENOR * cantidadDeEntradas : 0
     return valorTotal
 }
-function numeroCarritoInner(cantidadReservas) {                                 //muestra span con numero de elementos en carrito
+function numeroCarritoInner(cantidadReservas) {
     const numeroCarrito = document.getElementById("spanCantCarrito")
     numeroCarrito.innerHTML = `
     <span class="badge bg-primary rounded-pill">${cantidadReservas}</span>
@@ -156,8 +156,29 @@ function eventBotonFinCompra() {
             }
         })
 }
-//vista de botones y secciones
-document.getElementById("botonFinalizarCompra").style.display = 'none'
+function cerrarSesionBtn() {
+    const botonSesion = document.getElementById("navCerrarSesion")
+    botonSesion.addEventListener("click", (e) => {
+        e.preventDefault()
+        sessionStorage.removeItem("login")
+        document.getElementById("navCerrarSesion").style.display = 'none'
+        Toastify({
+            text: `Cerrando Sesion....`,
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+            },
+            onClick: function () { }
+        }).showToast();
+        setTimeout(() => { //efecto de cerrar sesion
+            location.reload()
+        }, 3000)
+    })
+}
+document.getElementById("botonFinalizarCompra").style.display = 'none' //vista de botones y secciones
 function elementosVistaSesion() {
     document.getElementById("navCuenta").style.display = 'none'
     document.getElementById("botonFinalizarCompra").style.display = ''
@@ -179,32 +200,12 @@ if (localStorage.getItem("reservasLS")) {
 }
 eventBotonLimpiar()
 eventBotonFinCompra()
-//Condicion para revisar si me encuentro en el index, registro o sesion y aplicar su respectivo codigo JS
-if (document.getElementById("pageName").value == "index") {
+if (document.getElementById("pageName").value == "index") { //Condicion para revisar si me encuentro en el index
     document.getElementById("navCerrarSesion").style.display = 'none'
     if (sessionStorage.getItem("login")) {
         document.getElementById("navCerrarSesion").style.display = ''
     }
-    const botonSesion = document.getElementById("navCerrarSesion")
-    botonSesion.addEventListener("click", (e) => {
-        e.preventDefault()
-        sessionStorage.removeItem("login")
-        document.getElementById("navCerrarSesion").style.display = 'none'
-        Toastify({
-            text: `Cerrando Sesion....`,
-            duration: 3000,
-            gravity: "top",
-            position: "center",
-            stopOnFocus: true,
-            style: {
-                background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
-            },
-            onClick: function () { }
-        }).showToast();
-        setTimeout(() => {
-            location.reload()
-        }, 3000)
-    })
+    cerrarSesionBtn()
     const formEntrada = document.getElementById("formEntrada")
     formEntrada.addEventListener("submit", (event) => {
         event.preventDefault()
@@ -241,7 +242,7 @@ if (document.getElementById("pageName").value == "index") {
         formEntrada.reset()
     })
     const divProximamente = document.getElementById("divProximamente")
-    fetch('./json/estrenos.json')
+    fetch('./json/estrenos.json')  //dibujar seccion proximamente
         .then(response => response.json())
         .then(estrenosProx => {
             estrenosProx.forEach((pelicula) => {
@@ -259,7 +260,7 @@ if (document.getElementById("pageName").value == "index") {
             `
             })
         })
-} else if (document.getElementById("pageName").value == "registro") {
+} else if (document.getElementById("pageName").value == "registro") {   //condicion seccion registro
     let cuentas = []
     if (localStorage.getItem("cuentasLS")) {
         cuentas = JSON.parse(localStorage.getItem("cuentasLS"))
@@ -267,7 +268,7 @@ if (document.getElementById("pageName").value == "index") {
     const formRegistro = document.getElementById("formRegistro")
     formRegistro.addEventListener("submit", (event) => {
         event.preventDefault()
-        const pattern = new RegExp('[A-Za-z]+'); //valores que van a ser validos en "nombre" y "apellido"
+        const pattern = new RegExp('[A-Za-z]+'); //caracteres que van a ser validos en "nombre" y "apellido"
         const dataForm = new FormData(event.target)
         const nombre = dataForm.get("inputName")
         const apellido = dataForm.get("inputSurname")
@@ -291,7 +292,8 @@ if (document.getElementById("pageName").value == "index") {
             valoresNoValidos()
         }
     })
-} else if (document.getElementById("pageName").value == "sesion") {
+} else if (document.getElementById("pageName").value == "sesion") { //Condicion seccion sesion
+    document.getElementById("navCerrarSesion").style.display = 'none'
     function obtenerListaUsers() {
         let usersDb = JSON.parse(localStorage.getItem('cuentasLS'))
         return usersDb
@@ -312,27 +314,43 @@ if (document.getElementById("pageName").value == "index") {
         event.preventDefault()
         const email = document.getElementById("inputEmail").value
         const psw = document.getElementById("inputPsw").value
-        console.log(validarCredenciales(email, psw))
-        if (validarCredenciales(email, psw)) {
-            sessionStorage.setItem("login", true)
-            elementosVistaSesion()
-            formIniciarSesion.innerHTML = `
-        <h3>Sesion iniciada, revisa tu carrito para completar la compra</h3>
-        <div id="entradasSesion"><div>`
+        if (localStorage.getItem('cuentasLS')) {
+            if (validarCredenciales(email, psw)) {
+                sessionStorage.setItem("login", true)
+                elementosVistaSesion()
+                cerrarSesionBtn()
+                document.getElementById("navCerrarSesion").style.display = ''
+                formIniciarSesion.innerHTML = `
+            <h3>Sesion iniciada, revisa tu carrito para completar la compra</h3>
+            <div id="entradasSesion"><div>`
+                Toastify({
+                    text: `Credenciales validadas, bienvenido/a`,
+                    duration: 2000,
+                    gravity: "top",
+                    position: "center",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+                    },
+                    onClick: function () { }
+                }).showToast();
+            } else {
+                valoresNoValidos()
+            }
+        } else {
             Toastify({
-                text: `Credenciales validadas, bienvenido/a`,
-                duration: 2000,
+                text: 'Credenciales invalidas, intente nuevamente o registrese desde "Crear Cuenta"',
+                duration: 2500,
                 gravity: "top",
                 position: "center",
                 stopOnFocus: true,
                 style: {
-                    background: "linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)",
+                    background: "linear-gradient(90deg, rgba(176,56,56,0.8855917366946778) 100%, rgba(233,148,187,1) 100%)",
                 },
                 onClick: function () { }
             }).showToast();
-        } else {
-            valoresNoValidos()
         }
+
         formIniciarSesion.reset()
     })
     if (JSON.parse(sessionStorage.getItem("login")) == true) {
@@ -340,5 +358,7 @@ if (document.getElementById("pageName").value == "index") {
         <h3>Sesion iniciada, revisa tu carrito para completar la compra</h3>
         <div id="entradasSesion"><div>`
         elementosVistaSesion()
+        cerrarSesionBtn()
+        document.getElementById("navCerrarSesion").style.display = ''
     }
 }
